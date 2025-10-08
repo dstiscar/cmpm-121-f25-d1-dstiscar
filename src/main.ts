@@ -13,6 +13,13 @@ const counterElement = document.getElementById("counter")!;
 
 let counter: number = 0;
 
+const intervalID = setInterval(myCallback, 1000);
+
+function myCallback() {
+  counter += 1;
+  counterElement.textContent = counter.toString();
+}
+
 button.addEventListener("click", () => {
   counter += 1;
   counterElement.textContent = counter.toString();
