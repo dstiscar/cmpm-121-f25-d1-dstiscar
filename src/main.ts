@@ -11,14 +11,22 @@ document.body.innerHTML = `
 const button = document.getElementById("catbutton")!;
 const counterElement = document.getElementById("counter")!;
 
+let startTime = null;
+const interval = 1000;
+
 let counter: number = 0;
 
-setInterval(myCallback, 1000);
-
-function myCallback() {
-  counter += 1;
-  counterElement.textContent = counter.toString();
+function myCallback(timestamp) {
+  if (!startTime) startTime = timestamp;
+  if (timestamp - startTime >= interval) {
+    counter += 1;
+    counterElement.textContent = counter.toString();
+    startTime = timestamp;
+  }
+  requestAnimationFrame(myCallback);
 }
+
+requestAnimationFrame(myCallback);
 
 button.addEventListener("click", () => {
   counter += 1;
