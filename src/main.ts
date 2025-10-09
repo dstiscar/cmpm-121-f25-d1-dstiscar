@@ -11,12 +11,12 @@ document.body.innerHTML = `
 const button = document.getElementById("catbutton")!;
 const counterElement = document.getElementById("counter")!;
 
-let startTime = null;
+let startTime: number = 0;
 const interval = 1000;
 
 let counter: number = 0;
 
-function myCallback(timestamp) {
+function myCallback(timestamp: number) {
   if (!startTime) startTime = timestamp;
   if (timestamp - startTime >= interval) {
     counter += 1;
