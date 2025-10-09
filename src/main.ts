@@ -53,5 +53,3 @@ tlcButton.addEventListener("click", () => {
   tlcButton.disabled = true;
   startTime = 0;
 });
-
-
