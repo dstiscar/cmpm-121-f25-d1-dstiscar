@@ -3,38 +3,77 @@ import "./style.css";
 
 document.body.innerHTML = `
   <p>Care: <span id="counter">0</span></p>
+  <p><span id="rate">0</span> care/sec</p>
   <button id="catbutton">
   <img src="${catImageUrl}" class="icon" />
   </button>
+  <p>
+  <button id="handbutton">
+  Extra Hand (10 Care)
+  </button>&nbsp;
+  <span id="handamt">0</span>
+  </p>
+  <p>
   <button id="tlcbutton">
-  TLC (10 Care)
-  </button>
+  TLC (100 Care)
+  </button>&nbsp;
+  <span id="tlcamt">0</span>
+  </p>
+  <p>
+  <button id="mechbutton">
+  Pet Machine (1000 Care)
+  </button>&nbsp;
+  <span id="mechamt">0</span>
+  </p>
 `;
 
 const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
-const tlcButton = document.getElementById("tlcbutton")! as HTMLButtonElement;
-tlcButton.disabled = true;
 const counterElement = document.getElementById("counter")!;
+const rateElement = document.getElementById("rate")!;
+
+const handButton = document.getElementById("handbutton")! as HTMLButtonElement;
+const tlcButton = document.getElementById("tlcbutton")! as HTMLButtonElement;
+const mechButton = document.getElementById("mechbutton")! as HTMLButtonElement;
+handButton.disabled = true;
+tlcButton.disabled = true;
+mechButton.disabled = true;
+
+const handamtElement = document.getElementById("handamt")!;
+const tlcamtElement = document.getElementById("tlcamt")!;
+const mechamtElement = document.getElementById("mechamt")!;
+
+const handCost = 10;
+const tlcCost = 100;
+const mechCost = 1000;
+
+let handAmt = 0;
+let tlcAmt = 0;
+let mechAmt = 0;
 
 let startTime: number = 0;
-let interval: number = 1000;
+let fps: number = 0;
 let growthRate: number = 0;
-const tlcCost = 10;
 
 let counter: number = 0;
 
-function myCallback(timestamp: number) {
+function myCallback(timestamp: number = performance.timeOrigin + performance.now()) {
   if (!startTime) startTime = timestamp;
+  
+  fps = (timestamp - startTime) / 1000
+  counter += fps * growthRate;
+  startTime = timestamp;
 
-  interval = 1000 / growthRate;
-  if (growthRate > 0) {
-    if (timestamp - startTime >= interval) {
-      counter += 1;
-      counterElement.textContent = counter.toString();
-      tlcButton.disabled = counter < tlcCost;
-      startTime = timestamp;
-    }
-  }
+  counterElement.textContent = counter.toString();
+  rateElement.textContent = growthRate.toString();
+
+  handamtElement.textContent = handAmt.toString();
+  tlcamtElement.textContent = tlcAmt.toString();
+  mechamtElement.textContent = mechAmt.toString();
+
+  handButton.disabled = counter < handCost;
+  tlcButton.disabled = counter < tlcCost;
+  mechButton.disabled = counter < mechCost;
+      
   requestAnimationFrame(myCallback);
 }
 
@@ -43,13 +82,23 @@ requestAnimationFrame(myCallback);
 catButton.addEventListener("click", () => {
   counter += 1;
   counterElement.textContent = counter.toString();
-  tlcButton.disabled = counter < tlcCost;
+  handButton.disabled = counter < handCost;
+});
+
+handButton.addEventListener("click", () => {
+  growthRate += 0.1;
+  counter -= handCost;
+  handAmt += 1;
 });
 
 tlcButton.addEventListener("click", () => {
+  growthRate += 2;
   counter -= tlcCost;
-  growthRate += 1;
-  counterElement.textContent = counter.toString();
-  tlcButton.disabled = true;
-  startTime = 0;
+  tlcAmt += 1;
+});
+
+mechButton.addEventListener("click", () => {
+  growthRate += 50;
+  counter -= mechCost;
+  mechAmt += 1;
 });
