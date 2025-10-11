@@ -56,10 +56,12 @@ let growthRate: number = 0;
 
 let counter: number = 0;
 
-function myCallback(timestamp: number = performance.timeOrigin + performance.now()) {
+function myCallback(
+  timestamp: number = performance.timeOrigin + performance.now(),
+) {
   if (!startTime) startTime = timestamp;
-  
-  fps = (timestamp - startTime) / 1000
+
+  fps = (timestamp - startTime) / 1000;
   counter += fps * growthRate;
   startTime = timestamp;
 
@@ -73,7 +75,7 @@ function myCallback(timestamp: number = performance.timeOrigin + performance.now
   handButton.disabled = counter < handCost;
   tlcButton.disabled = counter < tlcCost;
   mechButton.disabled = counter < mechCost;
-      
+
   requestAnimationFrame(myCallback);
 }
 
