@@ -9,19 +9,19 @@ document.body.innerHTML = `
   </button>
   <p>
   <button id="handbutton">
-  Extra Hand (10 Care)
+  Extra Hand (<span id="handcost">10</span> Care)
   </button>&nbsp;
   <span id="handamt">0</span>
   </p>
   <p>
   <button id="tlcbutton">
-  TLC (100 Care)
+  TLC (<span id="tlccost">100</span> Care)
   </button>&nbsp;
   <span id="tlcamt">0</span>
   </p>
   <p>
   <button id="mechbutton">
-  Pet Machine (1000 Care)
+  Pet Machine (<span id="mechcost">1000</span> Care)
   </button>&nbsp;
   <span id="mechamt">0</span>
   </p>
@@ -42,13 +42,17 @@ const handamtElement = document.getElementById("handamt")!;
 const tlcamtElement = document.getElementById("tlcamt")!;
 const mechamtElement = document.getElementById("mechamt")!;
 
-const handCost = 10;
-const tlcCost = 100;
-const mechCost = 1000;
+const handcostElement = document.getElementById("handcost")!;
+const tlccostElement = document.getElementById("tlccost")!;
+const mechcostElement = document.getElementById("mechcost")!;
 
-let handAmt = 0;
-let tlcAmt = 0;
-let mechAmt = 0;
+let handCost: number = 10;
+let tlcCost: number = 100;
+let mechCost: number = 1000;
+
+let handAmt: number = 0;
+let tlcAmt: number = 0;
+let mechAmt: number = 0;
 
 let startTime: number = 0;
 let fps: number = 0;
@@ -56,9 +60,7 @@ let growthRate: number = 0;
 
 let counter: number = 0;
 
-function myCallback(
-  timestamp: number = performance.timeOrigin + performance.now(),
-) {
+function myCallback(timestamp: number = performance.timeOrigin + performance.now()) {
   if (!startTime) startTime = timestamp;
 
   fps = (timestamp - startTime) / 1000;
@@ -71,6 +73,10 @@ function myCallback(
   handamtElement.textContent = handAmt.toString();
   tlcamtElement.textContent = tlcAmt.toString();
   mechamtElement.textContent = mechAmt.toString();
+
+  handcostElement.textContent = handCost.toString();
+  tlccostElement.textContent = tlcCost.toString();
+  mechcostElement.textContent = mechCost.toString();
 
   handButton.disabled = counter < handCost;
   tlcButton.disabled = counter < tlcCost;
@@ -89,18 +95,24 @@ catButton.addEventListener("click", () => {
 
 handButton.addEventListener("click", () => {
   growthRate += 0.1;
+
   counter -= handCost;
   handAmt += 1;
+  handCost *= 1.15;
 });
 
 tlcButton.addEventListener("click", () => {
   growthRate += 2;
+
   counter -= tlcCost;
   tlcAmt += 1;
+  tlcCost *= 1.15;
 });
 
 mechButton.addEventListener("click", () => {
   growthRate += 50;
+
   counter -= mechCost;
   mechAmt += 1;
+  mechCost *= 1.15;
 });
