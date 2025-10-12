@@ -11,19 +11,19 @@ document.body.innerHTML = `
   <button id="handbutton">
   Extra Hand (<span id="handcost">10</span> Care)
   </button>&nbsp;
-  <span id="handamt">0</span>
+  amt: <span id="handamt">0</span>
   </p>
   <p>
   <button id="tlcbutton">
   TLC (<span id="tlccost">100</span> Care)
   </button>&nbsp;
-  <span id="tlcamt">0</span>
+  amt: <span id="tlcamt">0</span>
   </p>
   <p>
   <button id="mechbutton">
   Pet Machine (<span id="mechcost">1000</span> Care)
   </button>&nbsp;
-  <span id="mechamt">0</span>
+  amt: <span id="mechamt">0</span>
   </p>
 `;
 
@@ -34,9 +34,6 @@ const rateElement = document.getElementById("rate")!;
 const handButton = document.getElementById("handbutton")! as HTMLButtonElement;
 const tlcButton = document.getElementById("tlcbutton")! as HTMLButtonElement;
 const mechButton = document.getElementById("mechbutton")! as HTMLButtonElement;
-handButton.disabled = true;
-tlcButton.disabled = true;
-mechButton.disabled = true;
 
 const handamtElement = document.getElementById("handamt")!;
 const tlcamtElement = document.getElementById("tlcamt")!;
@@ -69,20 +66,20 @@ function myCallback(
   counter += fps * growthRate;
   startTime = timestamp;
 
-  counterElement.textContent = counter.toString();
-  rateElement.textContent = growthRate.toString();
+  counterElement.textContent = Math.floor(counter).toString();
+  rateElement.textContent = (Math.floor(growthRate*10)/10).toString();
 
-  handamtElement.textContent = handAmt.toString();
-  tlcamtElement.textContent = tlcAmt.toString();
-  mechamtElement.textContent = mechAmt.toString();
+  handamtElement.textContent = Math.floor(handAmt).toString();
+  tlcamtElement.textContent = Math.floor(tlcAmt).toString();
+  mechamtElement.textContent = Math.floor(mechAmt).toString();
 
-  handcostElement.textContent = handCost.toString();
-  tlccostElement.textContent = tlcCost.toString();
-  mechcostElement.textContent = mechCost.toString();
+  handcostElement.textContent = Math.floor(handCost).toString();
+  tlccostElement.textContent = Math.floor(tlcCost).toString();
+  mechcostElement.textContent = Math.floor(mechCost).toString();
 
-  handButton.disabled = counter < handCost;
-  tlcButton.disabled = counter < tlcCost;
-  mechButton.disabled = counter < mechCost;
+  handButton.disabled = counter < Math.floor(handCost);
+  tlcButton.disabled = counter < Math.floor(tlcCost);
+  mechButton.disabled = counter < Math.floor(mechCost);
 
   requestAnimationFrame(myCallback);
 }
