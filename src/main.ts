@@ -60,7 +60,9 @@ let growthRate: number = 0;
 
 let counter: number = 0;
 
-function myCallback(timestamp: number = performance.timeOrigin + performance.now()) {
+function myCallback(
+  timestamp: number = performance.timeOrigin + performance.now(),
+) {
   if (!startTime) startTime = timestamp;
 
   fps = (timestamp - startTime) / 1000;
