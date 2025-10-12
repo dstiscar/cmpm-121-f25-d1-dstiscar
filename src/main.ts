@@ -67,7 +67,7 @@ function myCallback(
   startTime = timestamp;
 
   counterElement.textContent = Math.floor(counter).toString();
-  rateElement.textContent = (Math.floor(growthRate*10)/10).toString();
+  rateElement.textContent = (Math.floor(growthRate * 10) / 10).toString();
 
   handamtElement.textContent = Math.floor(handAmt).toString();
   tlcamtElement.textContent = Math.floor(tlcAmt).toString();
