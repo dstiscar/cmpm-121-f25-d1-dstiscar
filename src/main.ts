@@ -9,6 +9,22 @@ document.body.innerHTML = `
   </button>
 `;
 
+let counter: number = 0;
+let growthRate: number = 0;
+let startTime: number = 0;
+let fps: number = 0;
+
+// cat button
+const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
+catButton.addEventListener("click", () => {
+  counter++;
+});
+
+// create care and rate counters
+const counterElement = document.getElementById("counter")!;
+const rateElement = document.getElementById("rate")!;
+
+// create item data
 interface Item {
   name: string;
   cost: number;
@@ -17,13 +33,6 @@ interface Item {
   button: HTMLButtonElement;
   desc: string;
 }
-
-// create general buttons
-const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
-const counterElement = document.getElementById("counter")!;
-const rateElement = document.getElementById("rate")!;
-
-// item button data
 const Items: Item[] = [
   {
     name: "Extra Hand",
@@ -67,11 +76,7 @@ const Items: Item[] = [
   },
 ];
 
-let counter: number = 0;
-let growthRate: number = 0;
-let startTime: number = 0;
-let fps: number = 0;
-
+// create item buttons
 Items.forEach((Item: Item) => {
   // item button
   document.body.append(document.createElement("br"));
@@ -102,6 +107,7 @@ Items.forEach((Item: Item) => {
   });
 });
 
+// update every frame
 function myCallback(
   timestamp: number = performance.timeOrigin + performance.now(),
 ) {
@@ -125,7 +131,3 @@ function myCallback(
 }
 requestAnimationFrame(myCallback);
 
-// when cat button is clicked
-catButton.addEventListener("click", () => {
-  counter++;
-});
