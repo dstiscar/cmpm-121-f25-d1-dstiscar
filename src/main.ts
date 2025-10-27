@@ -130,4 +130,3 @@ function myCallback(
   requestAnimationFrame(myCallback);
 }
 requestAnimationFrame(myCallback);
-
