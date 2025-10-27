@@ -7,46 +7,6 @@ document.body.innerHTML = `
   <button id="catbutton">
   <img src="${catImageUrl}" class="icon" />
   </button>
-  <br>
-  <p>
-  <button id="handbutton">
-  Extra Hand (<span id="handcost">10</span> Care)
-  </button>&nbsp;
-  amt: <span id="handamt">0</span>
-  </p>
-  <p>Need an embodied hand on petting this cat?</p>
-  <br>
-  <p>
-  <button id="tlcbutton">
-  TLC (<span id="tlccost">100</span> Care)
-  </button>&nbsp;
-  amt: <span id="tlcamt">0</span>
-  </p>
-  <p>It stands for Tender-Loving Care</p>
-  <br>
-  <p>
-  <button id="mechbutton">
-  Pet Machine (<span id="mechcost">1000</span> Care)
-  </button>&nbsp;
-  amt: <span id="mechamt">0</span>
-  </p>
-  <p>A cat-petting machine so your cat doesn't get lonely</p>
-  <br>
-  <p>
-  <button id="massagebutton">
-  Head Massager (<span id="massagecost">5000</span> Care)
-  </button>&nbsp;
-  amt: <span id="massageamt">0</span>
-  </p>
-  <p>Plant one on your cat's head like a parasite!</p>
-  <br>
-  <p>
-  <button id="farmbutton">
-  Hand Farm (<span id="farmcost">10000</span> Care)
-  </button>&nbsp;
-  amt: <span id="farmamt">0</span>
-  </p>
-  <p>Disembodied hands, fresh from the farm!</p>
 `;
 
 interface Item {
@@ -55,8 +15,7 @@ interface Item {
   rate: number;
   amount: number;
   button: HTMLButtonElement;
-  amtelement: Element;
-  costelement: Element;
+  desc: string;
 }
 
 // create general buttons
@@ -64,52 +23,47 @@ const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
 const counterElement = document.getElementById("counter")!;
 const rateElement = document.getElementById("rate")!;
 
-// create item buttons
+// item button data
 const Items: Item[] = [
   {
     name: "Extra Hand",
     cost: 10,
     rate: 0.1,
     amount: 0,
-    button: document.getElementById("handbutton")! as HTMLButtonElement,
-    amtelement: document.getElementById("handamt")!,
-    costelement: document.getElementById("handcost")!,
+    button: document.createElement("button"),
+    desc: "Need an embodied hand on petting this cat?",
   },
   {
     name: "TLC",
     cost: 100,
     rate: 2,
     amount: 0,
-    button: document.getElementById("tlcbutton")! as HTMLButtonElement,
-    amtelement: document.getElementById("tlcamt")!,
-    costelement: document.getElementById("tlccost")!,
+    button: document.createElement("button"),
+    desc: 'It stands for "Tender-Loving Care"',
   },
   {
     name: "Petting Machine",
     cost: 1000,
     rate: 50,
     amount: 0,
-    button: document.getElementById("mechbutton")! as HTMLButtonElement,
-    amtelement: document.getElementById("mechamt")!,
-    costelement: document.getElementById("mechcost")!,
+    button: document.createElement("button"),
+    desc: "A cat-petting machine so your cat doesn't get lonely",
   },
   {
     name: "Head Massager",
     cost: 5000,
     rate: 100,
     amount: 0,
-    button: document.getElementById("massagebutton")! as HTMLButtonElement,
-    amtelement: document.getElementById("massageamt")!,
-    costelement: document.getElementById("massagecost")!,
+    button: document.createElement("button"),
+    desc: "Plant one on your cat's head like a parasite!",
   },
   {
     name: "Hand Farm",
     cost: 10000,
     rate: 500,
     amount: 0,
-    button: document.getElementById("farmbutton")! as HTMLButtonElement,
-    amtelement: document.getElementById("farmamt")!,
-    costelement: document.getElementById("farmcost")!,
+    button: document.createElement("button"),
+    desc: "Disembodied hands, fresh from the farm!",
   },
 ];
 
@@ -117,6 +71,36 @@ let counter: number = 0;
 let growthRate: number = 0;
 let startTime: number = 0;
 let fps: number = 0;
+
+Items.forEach((Item: Item) => {
+  // item button
+  document.body.append(document.createElement("br"));
+  document.body.append(document.createElement("br"));
+  Item.button.innerHTML = Item.name + " (" + Item.cost.toString() + " Care)";
+  document.body.append(Item.button);
+
+  // amount counter
+  document.body.append(" Amount: ");
+  const amt = document.createElement("string");
+  amt.innerHTML = Item.amount.toString();
+  document.body.append(amt);
+
+  // item description
+  document.body.append(document.createElement("br"));
+  document.body.append(Item.desc);
+
+  // when item button is clicked
+  Item.button.addEventListener("click", () => {
+    growthRate += Item.rate;
+    counter -= Item.cost;
+    Item.amount++;
+    Item.cost = Math.floor(Item.cost * 1.15);
+
+    // update cost and amount counters
+    Item.button.innerHTML = Item.name + " (" + Item.cost.toString() + " Care)";
+    amt.innerHTML = Item.amount.toString();
+  });
+});
 
 function myCallback(
   timestamp: number = performance.timeOrigin + performance.now(),
@@ -132,10 +116,8 @@ function myCallback(
   counterElement.textContent = Math.floor(counter).toString();
   rateElement.textContent = (Math.floor(growthRate * 10) / 10).toString();
 
-  // update each button status
+  // update status for each item button
   Items.forEach((Item: Item) => {
-    Item.amtelement.textContent = Math.floor(Item.amount).toString();
-    Item.costelement.textContent = Math.floor(Item.cost).toString();
     Item.button.disabled = counter < Math.floor(Item.cost);
   });
 
@@ -143,17 +125,7 @@ function myCallback(
 }
 requestAnimationFrame(myCallback);
 
-// clicking on cat button
+// when cat button is clicked
 catButton.addEventListener("click", () => {
   counter++;
-});
-
-// clicking on item buttons
-Items.forEach((Item: Item) => {
-  Item.button.addEventListener("click", () => {
-    growthRate += Item.rate;
-    counter -= Item.cost;
-    Item.amount++;
-    Item.cost *= 1.15;
-  });
 });
