@@ -59,10 +59,12 @@ interface Item {
   costelement: Element;
 }
 
+// create general buttons
 const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
 const counterElement = document.getElementById("counter")!;
 const rateElement = document.getElementById("rate")!;
 
+// create item buttons
 const Items: Item[] = [
   {
     name: "Extra Hand",
@@ -121,13 +123,16 @@ function myCallback(
 ) {
   if (!startTime) startTime = timestamp;
 
+  // update time
   fps = (timestamp - startTime) / 1000;
   counter += fps * growthRate;
   startTime = timestamp;
 
+  // update care and rate counters
   counterElement.textContent = Math.floor(counter).toString();
   rateElement.textContent = (Math.floor(growthRate * 10) / 10).toString();
 
+  // update each button status
   Items.forEach((Item: Item) => {
     Item.amtelement.textContent = Math.floor(Item.amount).toString();
     Item.costelement.textContent = Math.floor(Item.cost).toString();
@@ -138,10 +143,12 @@ function myCallback(
 }
 requestAnimationFrame(myCallback);
 
+// clicking on cat button
 catButton.addEventListener("click", () => {
   counter++;
 });
 
+// clicking on item buttons
 Items.forEach((Item: Item) => {
   Item.button.addEventListener("click", () => {
     growthRate += Item.rate;
