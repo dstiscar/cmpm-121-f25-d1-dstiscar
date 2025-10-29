@@ -107,7 +107,9 @@ Items.forEach((Item: Item) => {
     amt.innerHTML = Item.amount.toString();
 
     // update background gradient
-    document.body.style.background = 'linear-gradient(0deg, #61008aff 0%, #1a0079ff '+(growthRate*3).toString()+'%)';
+    document.body.style.background =
+      "linear-gradient(0deg, #61008aff 0%, #1a0079ff " +
+      (growthRate * 3).toString() + "%)";
   });
 });
 
