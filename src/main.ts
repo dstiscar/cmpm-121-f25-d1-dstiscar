@@ -7,6 +7,7 @@ document.body.innerHTML = `
   <button id="catbutton">
   <img src="${catImageUrl}" class="icon" />
   </button>
+  <link rel="stylesheet" href="style.css">
 `;
 
 let counter: number = 0;
@@ -104,6 +105,9 @@ Items.forEach((Item: Item) => {
     // update cost and amount counters
     Item.button.innerHTML = Item.name + " (" + Item.cost.toString() + " Care)";
     amt.innerHTML = Item.amount.toString();
+
+    // update background gradient
+    document.body.style.background = 'linear-gradient(0deg, #61008aff 0%, #1a0079ff '+(growthRate*3).toString()+'%)';
   });
 });
 

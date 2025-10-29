@@ -3,3 +3,10 @@
   height: 64px;
   vertical-align: top;
 }
+body {
+  margin: 20px;
+  height: 100vh;
+  color: white;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(0deg, #61008aff 0%, #1a0079ff 0%);
+}
