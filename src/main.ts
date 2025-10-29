@@ -11,6 +11,7 @@ document.body.innerHTML = `
 `;
 
 let counter: number = 0;
+let prevCounter: number = 0;
 let growthRate: number = 0;
 let startTime: number = 0;
 let fps: number = 0;
@@ -19,6 +20,11 @@ let fps: number = 0;
 const catButton = document.getElementById("catbutton")! as HTMLButtonElement;
 catButton.addEventListener("click", () => {
   counter++;
+  // animate normal click
+  catButton.classList.add("buttonanimate-heavy");
+  catButton.addEventListener("animationend", () => {
+    catButton.classList.remove("buttonanimate-heavy");
+  }, { once: true });
 });
 
 // create care and rate counters
@@ -100,7 +106,7 @@ Items.forEach((Item: Item) => {
     growthRate += Item.rate;
     counter -= Item.cost;
     Item.amount++;
-    Item.cost = Math.floor(Item.cost * 1.15);
+    Item.cost = Math.round(Item.cost * 1.15);
 
     // update cost and amount counters
     Item.button.innerHTML = Item.name + " (" + Item.cost.toString() + " Care)";
@@ -120,17 +126,29 @@ function myCallback(
   if (!startTime) startTime = timestamp;
 
   // update time
+  prevCounter = +counterElement.textContent;
   fps = (timestamp - startTime) / 1000;
   counter += fps * growthRate;
   startTime = timestamp;
 
   // update care and rate counters
-  counterElement.textContent = Math.floor(counter).toString();
-  rateElement.textContent = (Math.floor(growthRate * 10) / 10).toString();
+  counterElement.textContent = Math.round(counter).toString();
+  rateElement.textContent = (Math.round(growthRate * 10) / 10).toString();
+
+  // animate automatic click
+  if (
+    +counterElement.textContent > prevCounter &&
+    !catButton.classList.contains("buttonanimate-heavy")
+  ) {
+    catButton.classList.add("buttonanimate-light");
+    catButton.addEventListener("animationend", () => {
+      catButton.classList.remove("buttonanimate-light");
+    }, { once: true });
+  }
 
   // update status for each item button
   Items.forEach((Item: Item) => {
-    Item.button.disabled = counter < Math.floor(Item.cost);
+    Item.button.disabled = counter < Math.round(Item.cost);
   });
 
   requestAnimationFrame(myCallback);
