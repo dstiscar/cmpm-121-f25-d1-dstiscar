@@ -1,5 +1,5 @@
-import "./addstyle.css";
 import catImageUrl from "./black-cat_1f408-200d-2b1b.png";
+import "./style.css";
 
 document.body.innerHTML = `
   <p>Care: <span id="counter">0</span></p>

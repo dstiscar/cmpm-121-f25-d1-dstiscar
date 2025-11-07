@@ -2,6 +2,8 @@
 
 This is the starting point for your CMPM 121 D1 project. The goal of this project is to create a simple web application using TypeScript, Vite, and modern web development practices. Students should make sure to remove _this_ content from their README.md file and replace it with their own project documentation.
 
-Credits:
-dfang10 - gradiant dynamic background - [[text] text](https://github.com/dfang10/Incremental-Demo-1-Fixed)
-akiyamaethan - button animations - [[text] text](https://github.com/akiyamaethan/d1)
+## Credits
+
+dfang10: gradiant dynamic background ([site](https://github.com/dfang10/Incremental-Demo-1-Fixed))
+
+akiyamaethan: button animations ([site](https://github.com/akiyamaethan/d1))
